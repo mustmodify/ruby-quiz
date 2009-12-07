@@ -1,11 +1,8 @@
-require 'rubygems'
-require 'valuable'
-
 class DistinctSet < Valuable
 
   has_collection :set
-  has_value :testing, :default => false
-
+  has_collection :dirty
+  
   def parse
     dirty = (0..set.size).to_a
     
@@ -30,21 +27,6 @@ class DistinctSet < Valuable
     !((a & b).empty?) if a && b
   end
   
-  def dirty
-    @dirty ||= []
-  end
-
-  def elements
-    set.compact.size
-  end
-  
-  def loop_until_stable
-    begin
-      set_count = elements
-      yield
-    end while elements != set_count
-  end
-
   def result
     set.compact.map(&:sort)
   end
